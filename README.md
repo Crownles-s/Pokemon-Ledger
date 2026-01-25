@@ -57,14 +57,6 @@ This tool is intentionally lightweight and not a competitive optimizer.
 
 ---
 
-## 👤 Author
-
-**Made by Crownless**
-
-🔗 GitHub: https://github.com/Crownles-s
-
----
-
 ## 📜 License
 
 Pokémon and all related trademarks are © Nintendo, Game Freak, and The Pokémon Company.
