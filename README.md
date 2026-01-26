@@ -9,7 +9,7 @@ Designed for quick reference, clarity, and ease of use — no clutter, no accoun
 ## ✨ Features
 
 - ✅ **All 18 Pokémon types** (Gen 1–9)
-- 🔁 **Single or dual-type selection**
+- 🔁 **Single or dual-type selection, all Type-effectiveness altering abilities, and Terastallize**
 - ⚔️ **Attack mode**
   - Shows how effective your selected type(s) are *when attacking*
 - 🛡️ **Defense mode**
