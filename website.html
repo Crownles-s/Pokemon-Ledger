@@ -8,81 +8,120 @@
 <style>
 :root{
   --bg:#000000;--card:#0d0d0d;--text:#e5e7eb;--muted:#9ca3af;--accent:#a78bfa;--border:rgba(255,255,255,.08);
+  --header-bg:#2e1065;--header-text:#ffffff;
   --x4:#dc2626;--x2:#f87171;--x1:#eab308;--x05:#22c55e;--x025:#16a34a;--x0:#60a5fa;
 }
 body.light{
   --bg:#f4f6fb;--card:#ffffff;--text:#0f172a;--muted:#475569;--accent:#7c3aed;--border:rgba(0,0,0,.08);
+  --header-bg:#4c1d95;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;font-family:system-ui,Segoe UI,Roboto,sans-serif;font-weight:500;background:var(--bg);color:var(--text);transition:.3s}
 
-/* Layout */
 .wrapper{min-height:100%;display:flex;flex-direction:column}
-.header{padding:1.25rem 1.5rem 0}
+
+/* Restored Original Header */
+.header{
+    padding:1.5rem 1.5rem;
+    background: var(--header-bg);
+    color: var(--header-text);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
 .header-row{display:flex;align-items:center;justify-content:center;text-align:center}
-.title-row{display:flex;align-items:center;gap:.75rem;justify-content:center}
 .container{width:100%;max-width:960px;margin:0 auto;padding:1.5rem 1.5rem 0;flex:1;background:var(--bg)}
 
-h1{margin:0;font-weight:800;letter-spacing:.02em}
-.header-title{text-align:center;flex:1}
-.subtitle{color:var(--muted);margin:.25rem 0 0}
+h1{margin:0;font-weight:800;letter-spacing:.02em;font-size: 1.5rem}
+.subtitle{color:rgba(255,255,255,0.8);margin:.25rem 0 0;font-size: 0.9rem}
 
-/* Theme toggle (header row) */
-.theme-toggle{flex-shrink:0}
+/* Theme Toggle */
 .theme-toggle input{display:none}
-.theme-label{width:52px;height:28px;background:var(--border);border-radius:999px;position:relative;cursor:pointer;transition:.3s}
-.theme-label::after{content:"🌙";position:absolute;top:2px;left:2px;width:24px;height:24px;background:var(--card);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:.3s}
+.theme-label{width:52px;height:28px;background:rgba(255,255,255,0.2);border-radius:999px;position:relative;cursor:pointer;display:inline-block}
+.theme-label::after{content:"🌙";position:absolute;top:2px;left:2px;width:24px;height:24px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:.3s;color:#000}
 .theme-toggle input:checked + .theme-label::after{transform:translateX(24px);content:"☀️"}
 
-/* Cards & controls */
+/* iOS Switch Style */
+.ios-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+.ios-switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .3s; border-radius: 34px; }
+.slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+input:checked + .slider { background-color: var(--accent); box-shadow: 0 0 10px var(--accent); }
+input:checked + .slider:before { transform: translateX(20px); }
+
+/* Restored Compact Cards */
 .card{background:var(--card);border:1px solid var(--border);border-radius:1.25rem;padding:1rem}
-.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem}
-label{font-size:.8rem;color:var(--muted)}
-select{width:100%;padding:.65rem;border-radius:.75rem;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:600}
-select option{background:var(--card);color:var(--text)}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem}
+label{font-size:.8rem;color:var(--muted);font-weight:700;display:block}
+select{width:100%;padding:.65rem;border-radius:.75rem;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:600;font-size:.9rem;outline:none;margin-top:0.4rem}
+select:disabled{opacity:0.25}
 
-/* Buttons */
-.button-group{display:flex;gap:.5rem;margin-top:.5rem}
-button{flex:1;padding:.65rem;border-radius:.75rem;border:1px solid var(--accent);background:transparent;color:var(--accent);font-weight:700;cursor:pointer;transition:.25s}
-button:hover{box-shadow:0 0 10px color-mix(in srgb,var(--accent)60%,transparent)}
-button.active{background:var(--accent);color:#fff;box-shadow:0 0 16px color-mix(in srgb,var(--accent)80%,transparent)}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem}
 
-/* Results */
+/* Mode Buttons */
+.button-group{display:flex;gap:.5rem;margin-top:0.4rem}
+button{flex:1;padding:.65rem;border-radius:.75rem;border:1px solid var(--accent);background:transparent;color:var(--accent);font-weight:700;font-size:.9rem;cursor:pointer;transition:.2s ease}
+button.active{background:var(--accent);color:#fff;box-shadow:0 0 12px var(--accent)}
+
+/* RESULTS WITH TIERED BORDERS */
 .results{margin-top:2rem;display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.results .card h3 { font-size: 1rem; margin-bottom: 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; }
+
+/* Tiered Border Colors */
+.card.res-x4 { border: 2px solid var(--x4); }
+.card.res-x2 { border: 2px solid #f97316; } /* Orange */
+.card.res-x1 { border: 2px solid var(--x1); } /* Yellow */
+.card.res-x05 { border: 2px solid #86efac; } /* Light Green */
+.card.res-x025 { border: 2px solid var(--x025); } /* Bright Green */
+.card.res-x0 { border: 2px solid var(--x0); }
+
 .tag{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .65rem;border-radius:999px;font-size:.75rem;font-weight:800;margin:.15rem}
 .x4{background:color-mix(in srgb,var(--x4)20%,transparent);color:var(--x4)}
-.x2{background:color-mix(in srgb,var(--x2)20%,transparent);color:var(--x2)}
+.x2{background:color-mix(in srgb,#f97316 20%,transparent);color:#f97316}
 .x1{background:color-mix(in srgb,var(--x1)20%,transparent);color:var(--x1)}
-.x05{background:color-mix(in srgb,var(--x05)20%,transparent);color:var(--x05)}
+.x05{background:color-mix(in srgb,#86efac 20%,transparent);color:#86efac}
 .x025{background:color-mix(in srgb,var(--x025)20%,transparent);color:var(--x025)}
 .x0{background:color-mix(in srgb,var(--x0)20%,transparent);color:var(--x0)}
-.type-icon{width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:900}
+.type-icon{width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:900;color:#fff}
 
-/* Footer */
-footer{margin-top:0;text-align:center;color:var(--muted);font-size:.75rem;padding:1rem 0;background:var(--bg);border-top:1px solid var(--border)}
+footer{margin-top:2rem;text-align:center;color:var(--muted);font-size:.75rem;padding:1rem 0;background:var(--bg);border-top:1px solid var(--border)}
 </style>
 </head>
 <body>
 <div class="wrapper">
-
   <header class="header">
-  <div class="header-row">
-    <div class="header-title">
-      <h1>Pokémon Type Effectiveness Guide</h1>
-      <p class="subtitle">Casual Gen 1–9 Pokémon type effectiveness reference</p>
-      <div class="theme-toggle" style="margin-top:.75rem;display:flex;justify-content:center">
-        <input type="checkbox" id="themeToggle" />
-        <label for="themeToggle" class="theme-label"></label>
+    <div class="header-row">
+      <div class="header-title">
+        <h1>Pokémon Type Effectiveness Guide</h1>
+        <p class="subtitle">Gen 1–9 Pro Reference • Supports Abilities and Terastallize</p>
+        <div class="theme-toggle" style="margin-top:1rem;display:flex;justify-content:center">
+          <input type="checkbox" id="themeToggle" />
+          <label for="themeToggle" class="theme-label"></label>
+        </div>
       </div>
     </div>
-  </div>
-</header>
+  </header>
 
   <main class="container">
     <div class="controls">
       <div class="card"><label>Primary Type</label><select id="type1"></select></div>
       <div class="card"><label>Secondary Type</label><select id="type2"></select></div>
+      
+      <div class="card">
+        <div class="card-header">
+          <label>Ability</label>
+          <label class="ios-switch"><input type="checkbox" id="abilityToggle" checked><span class="slider"></span></label>
+        </div>
+        <select id="abilitySelect"></select>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <label>Terastallize</label>
+          <label class="ios-switch"><input type="checkbox" id="teraToggle"><span class="slider"></span></label>
+        </div>
+        <select id="teraType" disabled></select>
+      </div>
+
       <div class="card">
         <label>Mode</label>
         <div class="button-group">
@@ -91,47 +130,102 @@ footer{margin-top:0;text-align:center;color:var(--muted);font-size:.75rem;paddin
         </div>
       </div>
     </div>
-
     <div class="results" id="results"></div>
   </main>
 
   <footer>
-  <div style="margin-bottom:.35rem;font-weight:600">Made by Crownless</div>
-  <div style="margin-bottom:.5rem">
-    <a href="https://github.com/Crownles-s" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:none;font-weight:600">Github</a>
-  </div>
-  <div>Supports Gen 1–9 typings • Accurate multiplier stacking • Offline friendly</div>
-</footer>
+    <div style="margin-bottom:.35rem;font-weight:600">Made by Crownless</div>
+    <div style="margin-bottom:.5rem">
+      <a href="https://github.com/Crownles-s" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:none;font-weight:600">Github</a>
+    </div>
+    <div>Supports Gen 1–9 typings • Supports all Pokemon Games</div>
+  </footer>
 </div>
 
 <script>
 const TYPES=["Normal","Fire","Water","Electric","Grass","Ice","Fighting","Poison","Ground","Flying","Psychic","Bug","Rock","Ghost","Dragon","Dark","Steel","Fairy"];
 const ICON_COLORS={Normal:'#a8a878',Fire:'#f08030',Water:'#6890f0',Electric:'#f8d030',Grass:'#78c850',Ice:'#98d8d8',Fighting:'#c03028',Poison:'#a040a0',Ground:'#e0c068',Flying:'#a890f0',Psychic:'#f85888',Bug:'#a8b820',Rock:'#b8a038',Ghost:'#705898',Dragon:'#7038f8',Dark:'#705848',Steel:'#b8b8d0',Fairy:'#ee99ac'};
-const CHART={Normal:{Rock:.5,Ghost:0,Steel:.5},Fire:{Fire:.5,Water:.5,Grass:2,Ice:2,Bug:2,Rock:.5,Dragon:.5,Steel:2},Water:{Fire:2,Water:.5,Grass:.5,Ground:2,Rock:2,Dragon:.5},Electric:{Water:2,Electric:.5,Grass:.5,Ground:0,Flying:2,Dragon:.5},Grass:{Fire:.5,Water:2,Grass:.5,Poison:.5,Ground:2,Flying:.5,Bug:.5,Rock:2,Dragon:.5,Steel:.5},Ice:{Fire:.5,Water:.5,Grass:2,Ground:2,Flying:2,Dragon:2,Steel:.5},Fighting:{Normal:2,Ice:2,Rock:2,Dark:2,Steel:2,Poison:.5,Flying:.5,Psychic:.5,Bug:.5,Fairy:.5,Ghost:0},Poison:{Grass:2,Fairy:2,Poison:.5,Ground:.5,Rock:.5,Ghost:.5,Steel:0},Ground:{Fire:2,Electric:2,Grass:.5,Poison:2,Flying:0,Bug:.5,Rock:2,Steel:2},Flying:{Electric:.5,Grass:2,Fighting:2,Bug:2,Rock:.5,Steel:.5},Psychic:{Fighting:2,Poison:2,Psychic:.5,Steel:.5,Dark:0},Bug:{Fire:.5,Grass:2,Fighting:.5,Poison:.5,Flying:.5,Psychic:2,Ghost:.5,Dark:2,Steel:.5,Fairy:.5},Rock:{Fire:2,Ice:2,Fighting:.5,Ground:.5,Flying:2,Bug:2,Steel:.5},Ghost:{Normal:0,Psychic:2,Ghost:2,Dark:.5},Dragon:{Dragon:2,Steel:.5,Fairy:0},Dark:{Fighting:.5,Psychic:2,Ghost:2,Dark:.5,Fairy:.5},Steel:{Fire:.5,Water:.5,Electric:.5,Ice:2,Rock:2,Fairy:2,Steel:.5},Fairy:{Fire:.5,Fighting:2,Dragon:2,Dark:2,Poison:.5,Steel:.5}};
+const CHART={Normal:{Rock:.5,Ghost:0,Steel:.5},Fire:{Fire:.5,Water:.5,Grass:2,Ice:2,Bug:2,Rock:.5,Dragon:.5,Steel:2},Water:{Fire:2,Water:.5,Grass:.5,Ground:2,Rock:2,Dragon:.5},Electric:{Water:2,Electric:.5,Grass:.5,Ground:0,Flying:2,Dragon:.5},Grass:{Fire:.5,Water:2,Grass:.5,Poison:.5,Ground:2,Flying:.5,Bug:.5,Rock:2,Dragon:.5,Steel:.5},Ice:{Fire:.5,Water:.5,Ice:.5,Grass:2,Ground:2,Flying:2,Dragon:2,Steel:.5},Fighting:{Normal:2,Ice:2,Rock:2,Dark:2,Steel:2,Poison:.5,Flying:.5,Psychic:.5,Bug:.5,Fairy:.5,Ghost:0},Poison:{Grass:2,Fairy:2,Poison:.5,Ground:.5,Rock:.5,Ghost:.5,Steel:0},Ground:{Fire:2,Electric:2,Grass:.5,Poison:2,Flying:0,Bug:.5,Rock:2,Steel:2},Flying:{Electric:.5,Grass:2,Fighting:2,Bug:2,Rock:.5,Steel:.5},Psychic:{Fighting:2,Poison:2,Psychic:.5,Steel:.5,Dark:0},Bug:{Fire:.5,Grass:2,Fighting:.5,Poison:.5,Flying:.5,Psychic:2,Ghost:.5,Dark:2,Steel:.5,Fairy:.5},Rock:{Fire:2,Ice:2,Fighting:.5,Ground:.5,Flying:2,Bug:2,Steel:.5},Ghost:{Normal:0,Psychic:2,Ghost:2,Dark:.5},Dragon:{Dragon:2,Steel:.5,Fairy:0},Dark:{Fighting:.5,Psychic:2,Ghost:2,Dark:.5,Fairy:.5},Steel:{Fire:.5,Water:.5,Electric:.5,Ice:2,Rock:2,Fairy:2,Steel:.5},Fairy:{Fire:.5,Fighting:2,Dragon:2,Dark:2,Poison:.5,Steel:.5}};
 
-const type1=document.getElementById('type1');
-const type2=document.getElementById('type2');
-const results=document.getElementById('results');
-const attackBtn=document.getElementById('attackBtn');
-const defenseBtn=document.getElementById('defenseBtn');
-const themeToggle=document.getElementById('themeToggle');
+const CORE_ABILITIES = { "None": {}, "Delta Stream": { delta: true }, "Dry Skin": { immune: ["Water"], weak: { "Fire": 1.25 } }, "Earth Eater": { immune: ["Ground"] }, "Filter / Solid Rock": { filter: true }, "Flash Fire / Well-Baked Body": { immune: ["Fire"] }, "Fluffy": { weak: { "Fire": 2.0 } }, "Heatproof / Water Bubble": { half: ["Fire"] }, "Levitate": { immune: ["Ground"] }, "Lightning Rod / Volt Absorb": { immune: ["Electric"] }, "Mind's Eye / Scrappy": { scrappy: true }, "Purifying Salt": { half: ["Ghost"] }, "Sap Sipper": { immune: ["Grass"] }, "Storm Drain / Water Absorb": { immune: ["Water"] }, "Tera Shell (Full HP)": { teraShell: true }, "Thick Fat": { half: ["Fire", "Ice"] }, "Wonder Guard": { wonder: true } };
+
+const type1=document.getElementById('type1'), type2=document.getElementById('type2'), abs=document.getElementById('abilitySelect'), abilityToggle=document.getElementById('abilityToggle');
+const teraType=document.getElementById('teraType'), teraToggle=document.getElementById('teraToggle');
+const results=document.getElementById('results'), attackBtn=document.getElementById('attackBtn'), defenseBtn=document.getElementById('defenseBtn'), themeToggle=document.getElementById('themeToggle');
 
 function icon(t){return `<span class="type-icon" style="background:${ICON_COLORS[t]}">${t[0]}</span>`}
-function fillSelect(sel){sel.innerHTML='';sel.add(new Option('—',''));TYPES.forEach(t=>sel.add(new Option(t,t)))}
-fillSelect(type1);fillSelect(type2);
+function fillSelect(sel, items, defaultVal){sel.innerHTML=''; items.forEach(t=>sel.add(new Option(t,t))); if(defaultVal) sel.value = defaultVal;}
+
+fillSelect(type1, ["—", ...TYPES]);
+fillSelect(type2, ["—", ...TYPES]);
+fillSelect(teraType, TYPES, "Normal");
+fillSelect(abs, Object.keys(CORE_ABILITIES));
 
 let mode='attack';
 attackBtn.onclick=()=>setMode('attack');
 defenseBtn.onclick=()=>setMode('defense');
-function setMode(m){mode=m;attackBtn.classList.toggle('active',m==='attack');defenseBtn.classList.toggle('active',m==='defense');update();}
+function setMode(m){mode=m; attackBtn.classList.toggle('active',m==='attack'); defenseBtn.classList.toggle('active',m==='defense'); update();}
 
 themeToggle.onchange=()=>document.body.classList.toggle('light');
+teraToggle.onchange=()=>{ teraType.disabled = !teraToggle.checked; update(); };
+abilityToggle.onchange=()=>{ abs.disabled = !abilityToggle.checked; update(); };
+[type1, type2, abs, teraType].forEach(el => el.onchange = update);
 
-type1.onchange=type2.onchange=update;
+function calc(types){
+  const m={}; TYPES.forEach(t=>m[t]=1);
+  const abi = (abilityToggle.checked) ? (CORE_ABILITIES[abs.value] || {}) : {};
+  if(mode==='attack'){
+    TYPES.forEach(defender => {
+      let best = 0;
+      types.forEach(attacker => {
+        let score = CHART[attacker]?.[defender] ?? 1;
+        if(abi.scrappy && defender === "Ghost" && (attacker === "Normal" || attacker === "Fighting")) score = 1;
+        if(attacker === 'Ice' && defender === 'Water') score = 2; 
+        if(score > best) best = score;
+      });
+      m[defender] = best;
+    });
+  } else {
+    const defTypes = teraToggle.checked ? [teraType.value] : types;
+    TYPES.forEach(attacker => {
+      let val = 1;
+      defTypes.forEach(def => {
+          let eff = CHART[attacker]?.[def] ?? 1;
+          if(abi.delta && defTypes.includes('Flying') && ['Electric','Ice','Rock'].includes(attacker)) eff = 1;
+          val *= eff;
+      });
+      if(abi.immune?.includes(attacker)) val = 0;
+      if(abi.half?.includes(attacker)) val *= 0.5;
+      if(abi.weak?.[attacker]) val *= abi.weak[attacker];
+      if(abi.filter && val > 1) val *= 0.75;
+      if(abi.wonder && val <= 1 && val > 0) val = 0;
+      if(abi.teraShell) val = 0.5;
+      m[attacker] = val;
+    });
+  }
+  return m;
+}
 
-function calc(types){const m={};TYPES.forEach(t=>m[t]=1);if(mode==='attack'){types.forEach(a=>TYPES.forEach(d=>CHART[a]?.[d]!==undefined&&(m[d]*=CHART[a][d])));}else{TYPES.forEach(a=>types.forEach(d=>CHART[a]?.[d]!==undefined&&(m[a]*=CHART[a][d])));}return m;}
-function render(m){results.innerHTML='';[[4,'x4'],[2,'x2'],[1,'x1'],[.5,'x05'],[.25,'x025'],[0,'x0']].forEach(([v,c])=>{const div=document.createElement('div');div.className='card';div.innerHTML=`<h3>${v}×</h3>`;Object.entries(m).filter(e=>e[1]===v).forEach(e=>{div.innerHTML+=`<span class="tag ${c}">${icon(e[0])}${e[0]}</span>`});results.appendChild(div);});}
-function update(){if(!type1.value){results.innerHTML='';return;}render(calc([type1.value,type2.value].filter(Boolean)));}
+function render(m){
+  results.innerHTML='';
+  const config = [[4,'x4','res-x4'],[2,'x2','res-x2'],[1,'x1','res-x1'],[.5,'x05','res-x05'],[.25,'x025','res-x025'],[0,'x0','res-x0']];
+  config.forEach(([v, c, resClass]) => {
+    const list = Object.entries(m).filter(e => e[1] === v);
+    if(list.length > 0) {
+      const div = document.createElement('div');
+      div.className = `card ${resClass}`;
+      div.innerHTML = `<h3>${v}×</h3>`;
+      list.forEach(e => { div.innerHTML += `<span class="tag ${c}">${icon(e[0])}${e[0]}</span>`; });
+      results.appendChild(div);
+    }
+  });
+}
+
+function update(){
+  const tVals = [type1.value, type2.value].filter(v => v && v !== "—");
+  if(tVals.length === 0 && !teraToggle.checked){results.innerHTML=''; return;}
+  render(calc(tVals));
+}
 update();
 </script>
 </body>
