@@ -33,10 +33,19 @@ body{margin:0;font-family:system-ui,Segoe UI,Roboto,sans-serif;font-weight:500;b
 h1{margin:0;font-weight:800;letter-spacing:.02em;font-size: 1.5rem}
 .subtitle{color:rgba(255,255,255,0.8);margin:.25rem 0 0;font-size: 0.9rem}
 
-.theme-toggle input{display:none}
-.theme-label{width:52px;height:28px;background:rgba(255,255,255,0.2);border-radius:999px;position:relative;cursor:pointer;display:inline-block}
-.theme-label::after{content:"🌙";position:absolute;top:2px;left:2px;width:24px;height:24px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:.3s;color:#000}
+.toggle-group { display: flex; align-items: center; justify-content: center; gap: 2rem; margin-top: 1rem; }
+.toggle-wrapper { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.toggle-label-text { font-size: 0.7rem; font-weight: 800; color: rgba(255,255,255,0.6); text-transform: uppercase; }
+
+.theme-toggle input, .go-mode-toggle input {display:none}
+.theme-label, .go-label {width:52px;height:28px;background:rgba(255,255,255,0.2);border-radius:999px;position:relative;cursor:pointer;display:inline-block}
+.theme-label::after, .go-label::after {position:absolute;top:2px;left:2px;width:24px;height:24px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:.3s;color:#000}
+
+.theme-label::after{content:"🌙"}
 .theme-toggle input:checked + .theme-label::after{transform:translateX(24px);content:"☀️"}
+
+.go-label::after{content:"OFF"; font-size: 0.5rem; font-weight: 900;}
+.go-mode-toggle input:checked + .go-label::after{transform:translateX(24px); content:"GO"; color: #ef4444;}
 
 .ios-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
 .ios-switch input { opacity: 0; width: 0; height: 0; }
@@ -48,8 +57,21 @@ input:checked + .slider:before { transform: translateX(20px); }
 body.light .slider { background-color: #9ca3af; }
 body.light input:checked + .slider { background-color: var(--accent); }
 
-.card{background:var(--card);border:1px solid var(--border);border-radius:1.25rem;padding:1rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:1.25rem;padding:1rem; position: relative;}
 .controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem}
+
+/* Layout for GO Mode */
+body.go-active .controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+body.go-active .controls .card {
+    flex: 1;
+    min-width: 250px;
+    max-width: 300px;
+}
+
 label{font-size:.8rem;color:var(--muted);font-weight:700;display:block}
 select{width:100%;padding:.65rem;border-radius:.75rem;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:600;font-size:.9rem;outline:none;margin-top:0.4rem}
 select:disabled{opacity:0.25}
@@ -90,10 +112,23 @@ footer{margin-top:2rem;text-align:center;color:var(--muted);font-size:.75rem;pad
     <div class="header-row">
       <div class="header-title">
         <h1>Pokémon Type Effectiveness Guide</h1>
-        <p class="subtitle">Gen 1–9 Pro Reference • Supports Abilities and Terastallize</p>
-        <div class="theme-toggle" style="margin-top:1rem;display:flex;justify-content:center">
-          <input type="checkbox" id="themeToggle" />
-          <label for="themeToggle" class="theme-label"></label>
+        <p class="subtitle">Gen 1–9 Reference • Supports Abilities and Terastallize</p>
+        
+        <div class="toggle-group">
+          <div class="toggle-wrapper">
+            <span class="toggle-label-text">Theme</span>
+            <div class="theme-toggle">
+              <input type="checkbox" id="themeToggle" />
+              <label for="themeToggle" class="theme-label"></label>
+            </div>
+          </div>
+          <div class="toggle-wrapper">
+            <span class="toggle-label-text">Pokemon GO</span>
+            <div class="go-mode-toggle">
+              <input type="checkbox" id="goToggle" />
+              <label for="goToggle" class="go-label"></label>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -104,7 +139,7 @@ footer{margin-top:2rem;text-align:center;color:var(--muted);font-size:.75rem;pad
       <div class="card"><label>Primary Type</label><select id="type1"></select></div>
       <div class="card"><label>Secondary Type</label><select id="type2"></select></div>
       
-      <div class="card">
+      <div class="card" id="abilityCard">
         <div class="card-header">
           <label>Ability</label>
           <label class="ios-switch"><input type="checkbox" id="abilityToggle"><span class="slider"></span></label>
@@ -112,12 +147,29 @@ footer{margin-top:2rem;text-align:center;color:var(--muted);font-size:.75rem;pad
         <select id="abilitySelect"></select>
       </div>
 
-      <div class="card">
+      <div class="card" id="teraCard">
         <div class="card-header">
           <label>Terastallize</label>
           <label class="ios-switch"><input type="checkbox" id="teraToggle"><span class="slider"></span></label>
         </div>
         <select id="teraType" disabled></select>
+      </div>
+
+      <div class="card" id="weatherCard" style="display: none;">
+        <div class="card-header">
+          <label>Weather Boost</label>
+          <label class="ios-switch"><input type="checkbox" id="weatherToggle"><span class="slider"></span></label>
+        </div>
+        <select id="weatherSelect">
+          <option value="None">None</option>
+          <option value="Clear">Sunny/Clear (Fire, Grass, Ground)</option>
+          <option value="Rainy">Rainy (Water, Electric, Bug)</option>
+          <option value="Partly Cloudy">Partly Cloudy (Normal, Rock)</option>
+          <option value="Cloudy">Cloudy (Fairy, Fighting, Poison)</option>
+          <option value="Windy">Windy (Dragon, Flying, Psychic)</option>
+          <option value="Snow">Snow (Ice, Steel)</option>
+          <option value="Fog">Fog (Dark, Ghost)</option>
+        </select>
       </div>
 
       <div class="card">
@@ -136,12 +188,23 @@ footer{margin-top:2rem;text-align:center;color:var(--muted);font-size:.75rem;pad
     <div style="margin-bottom:.5rem">
       <a href="https://github.com/Crownles-s" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:none;font-weight:600">Github</a>
     </div>
-    <div>Supports Gen 1–9 typings • Supports all Pokemon Games</div>
+    <div>Supports Pokemon Go • Supports all mainline Pokemon Games</div>
   </footer>
 </div>
 
 <script>
 const TYPES=["Normal","Fire","Water","Electric","Grass","Ice","Fighting","Poison","Ground","Flying","Psychic","Bug","Rock","Ghost","Dragon","Dark","Steel","Fairy"];
+const WEATHER_TYPES = {
+  "None": [],
+  "Clear": ["Fire", "Grass", "Ground"],
+  "Rainy": ["Water", "Electric", "Bug"],
+  "Partly Cloudy": ["Normal", "Rock"],
+  "Cloudy": ["Fairy", "Fighting", "Poison"],
+  "Windy": ["Dragon", "Flying", "Psychic"],
+  "Snow": ["Ice", "Steel"],
+  "Fog": ["Dark", "Ghost"]
+};
+
 const TYPE_DATA = {
   Normal: { color: '#A8A77A', path: 'M12,2C6.47,2,2,6.47,2,12s4.47,10,10,10s10-4.47,10-10S17.53,2,12,2z M12,17c-2.76,0-5-2.24-5-5s2.24-5,5-5s5,2.24,5,5 S14.76,17,12,17z' },
   Fire: { color: '#EE8130', path: 'M17.43,11.23C16.5,8.19,13,6.3,13,2c0,0-5,2-5,7c0,1.25,0.44,2.39,1.16,3.3C7.45,11.51,6,9.88,6,8c-1.1,1.15-2,3.15-2,5 c0,4.42,3.58,8,8,8s8-3.58,8-8C20,11,17.43,11.23,17.43,11.23z' },
@@ -169,7 +232,9 @@ const CORE_ABILITIES = { "None": {}, "Delta Stream": { delta: true }, "Dry Skin"
 
 const type1=document.getElementById('type1'), type2=document.getElementById('type2'), abs=document.getElementById('abilitySelect'), abilityToggle=document.getElementById('abilityToggle');
 const teraType=document.getElementById('teraType'), teraToggle=document.getElementById('teraToggle');
-const results=document.getElementById('results'), attackBtn=document.getElementById('attackBtn'), defenseBtn=document.getElementById('defenseBtn'), themeToggle=document.getElementById('themeToggle');
+const results=document.getElementById('results'), attackBtn=document.getElementById('attackBtn'), defenseBtn=document.getElementById('defenseBtn'), themeToggle=document.getElementById('themeToggle'), goToggle=document.getElementById('goToggle');
+const weatherCard=document.getElementById('weatherCard'), weatherToggle=document.getElementById('weatherToggle'), weatherSelect=document.getElementById('weatherSelect');
+const abilityCard=document.getElementById('abilityCard'), teraCard=document.getElementById('teraCard');
 
 function icon(t){
   const data = TYPE_DATA[t];
@@ -190,39 +255,76 @@ defenseBtn.onclick=()=>setMode('defense');
 function setMode(m){mode=m; attackBtn.classList.toggle('active',m==='attack'); defenseBtn.classList.toggle('active',m==='defense'); update();}
 
 themeToggle.onchange=()=>document.body.classList.toggle('light');
+
+goToggle.onchange=()=>{
+  const isGO = goToggle.checked;
+  document.body.classList.toggle('go-active', isGO);
+  abilityCard.style.display = isGO ? 'none' : 'block';
+  teraCard.style.display = isGO ? 'none' : 'block';
+  weatherCard.style.display = isGO ? 'block' : 'none';
+  update();
+};
+
 teraToggle.onchange=()=>{ teraType.disabled = !teraToggle.checked; update(); };
 abilityToggle.onchange=()=>{ abs.disabled = !abilityToggle.checked; update(); };
-[type1, type2, abs, teraType].forEach(el => el.onchange = update);
+weatherToggle.onchange=()=>{ weatherSelect.disabled = !weatherToggle.checked; update(); };
+[type1, type2, abs, teraType, weatherSelect].forEach(el => el.onchange = update);
 
 function calc(types){
   const m={}; TYPES.forEach(t=>m[t]=1);
-  const abi = (abilityToggle.checked) ? (CORE_ABILITIES[abs.value] || {}) : {};
+  const isGO = goToggle.checked;
+  const abi = (!isGO && abilityToggle.checked) ? (CORE_ABILITIES[abs.value] || {}) : {};
+  
+  const GO_MULT = { SE: 1.6, NVE: 0.625, IMMUNE: 0.390625 };
+
   if(mode==='attack'){
     TYPES.forEach(defender => {
       let best = 0;
       types.forEach(attacker => {
         let score = CHART[attacker]?.[defender] ?? 1;
-        if(abi.scrappy && defender === "Ghost" && (attacker === "Normal" || attacker === "Fighting")) score = 1;
-        if(attacker === 'Ice' && defender === 'Water') score = 2; 
+        
+        if(isGO) {
+           if(score === 2) score = GO_MULT.SE;
+           else if(score === 0.5) score = GO_MULT.NVE;
+           else if(score === 0) score = GO_MULT.IMMUNE;
+           
+           if(weatherToggle.checked && WEATHER_TYPES[weatherSelect.value].includes(attacker)) {
+             score *= 1.2;
+           }
+        } else {
+           if(abi.scrappy && defender === "Ghost" && (attacker === "Normal" || attacker === "Fighting")) score = 1;
+           if(attacker === 'Ice' && defender === 'Water') score = 2; 
+        }
+
         if(score > best) best = score;
       });
       m[defender] = best;
     });
   } else {
-    const defTypes = teraToggle.checked ? [teraType.value] : types;
+    const defTypes = (!isGO && teraToggle.checked) ? [teraType.value] : types;
     TYPES.forEach(attacker => {
       let val = 1;
       defTypes.forEach(def => {
           let eff = CHART[attacker]?.[def] ?? 1;
-          if(abi.delta && defTypes.includes('Flying') && ['Electric','Ice','Rock'].includes(attacker)) eff = 1;
+          
+          if(isGO) {
+            if(eff === 2) eff = GO_MULT.SE;
+            else if(eff === 0.5) eff = GO_MULT.NVE;
+            else if(eff === 0) eff = GO_MULT.IMMUNE;
+          } else {
+            if(abi.delta && defTypes.includes('Flying') && ['Electric','Ice','Rock'].includes(attacker)) eff = 1;
+          }
           val *= eff;
       });
-      if(abi.immune?.includes(attacker)) val = 0;
-      if(abi.half?.includes(attacker)) val *= 0.5;
-      if(abi.weak?.[attacker]) val *= abi.weak[attacker];
-      if(abi.filter && val > 1) val *= 0.75;
-      if(abi.wonder && val <= 1 && val > 0) val = 0;
-      if(abi.teraShell) val = 0.5;
+      
+      if(!isGO) {
+          if(abi.immune?.includes(attacker)) val = 0;
+          if(abi.half?.includes(attacker)) val *= 0.5;
+          if(abi.weak?.[attacker]) val *= abi.weak[attacker];
+          if(abi.filter && val > 1) val *= 0.75;
+          if(abi.wonder && val <= 1 && val > 0) val = 0;
+          if(abi.teraShell) val = 0.5;
+      }
       m[attacker] = val;
     });
   }
@@ -231,17 +333,44 @@ function calc(types){
 
 function render(m){
   results.innerHTML='';
-  const config = [[4,'x4','res-x4'],[2,'x2','res-x2'],[1,'x1','res-x1'],[.5,'x05','res-x05'],[.25,'x025','res-x025'],[0,'x0','res-x0']];
-  config.forEach(([v, c, resClass]) => {
-    const list = Object.entries(m).filter(e => e[1] === v);
-    if(list.length > 0) {
+  const isGO = goToggle.checked;
+  const standardConfig = [[4,'x4','res-x4','4×'],[2,'x2','res-x2','2×'],[1,'x1','res-x1','1×'],[.5,'x05','res-x05','0.5×'],[.25,'x025','res-x025','0.25×'],[0,'x0','res-x0','0×']];
+  
+  if(isGO) {
+    const buckets = {};
+    Object.entries(m).forEach(([type, val]) => {
+      const rounded = Math.round(val * 1000) / 1000;
+      if(!buckets[rounded]) buckets[rounded] = [];
+      buckets[rounded].push(type);
+    });
+
+    Object.keys(buckets).sort((a,b) => b-a).forEach(val => {
+      let resClass = 'res-x1';
+      let tagClass = 'x1';
+      if(val > 1.2) { resClass = 'res-x4'; tagClass = 'x4'; }
+      else if(val > 1) { resClass = 'res-x2'; tagClass = 'x2'; }
+      else if(val < 1 && val > 0.5) { resClass = 'res-x05'; tagClass = 'x05'; }
+      else if(val <= 0.5 && val > 0.3) { resClass = 'res-x025'; tagClass = 'x025'; }
+      else if(val <= 0.3) { resClass = 'res-x0'; tagClass = 'x0'; }
+
       const div = document.createElement('div');
       div.className = `card ${resClass}`;
-      div.innerHTML = `<h3>${v}×</h3>`;
-      list.forEach(e => { div.innerHTML += `<span class="tag ${c}">${icon(e[0])}${e[0]}</span>`; });
+      div.innerHTML = `<h3>${val}×</h3>`;
+      buckets[val].forEach(t => { div.innerHTML += `<span class="tag ${tagClass}">${icon(t)}${t}</span>`; });
       results.appendChild(div);
-    }
-  });
+    });
+  } else {
+    standardConfig.forEach(([v, c, resClass, label]) => {
+      const list = Object.entries(m).filter(e => e[1] === v);
+      if(list.length > 0) {
+        const div = document.createElement('div');
+        div.className = `card ${resClass}`;
+        div.innerHTML = `<h3>${label}</h3>`;
+        list.forEach(e => { div.innerHTML += `<span class="tag ${c}">${icon(e[0])}${e[0]}</span>`; });
+        results.appendChild(div);
+      }
+    });
+  }
 }
 
 function update(){
