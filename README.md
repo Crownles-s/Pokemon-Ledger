@@ -1,7 +1,7 @@
-# Royal Type Ledger
+# Pokemon Ledger
 
-Royal Type Ledger is a static, client-side Pokémon matchup workspace. It
-combines a type-effectiveness ledger, Pokémon dossier, move calculator, team
+The Pokemon Ledger is a static, client-side Pokémon matchup workspace. It
+combines a type-effectiveness calculator, Pokémon dossier, move calculator, team
 builder, presets, shareable state, and Pokémon GO mode in one responsive page.
 
 The application has no backend, account system, build step, runtime API calls,
