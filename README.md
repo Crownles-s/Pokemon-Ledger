@@ -87,7 +87,7 @@ process, database, or environment configuration. See
 
 ## Scope
 
-Royal Type Ledger is a planning and reference tool, not a complete battle
+The Ledger is a planning and reference tool, not a complete battle
 simulator. Damage output is an estimate and does not model every item,
 critical-hit rule, stat stage, move-specific exception, battlefield effect, or
 game-version rule. Verify exact competitive legality against the target game's
