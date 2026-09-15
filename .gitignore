@@ -1,0 +1,28 @@
+# Local environments and secrets
+.venv/
+venv/
+env/
+ENV/
+*.env
+*.env.*
+!.env.example
+.envrc
+
+# Local tooling and generated artifacts
+.vscode/
+.idea/
+__pycache__/
+*.py[cod]
+node_modules/
+dist/
+build/
+coverage/
+.DS_Store
+Thumbs.db
+
+# Logs and local exports
+*.log
+*.local
+*.secret
+*.key
+*.pem
