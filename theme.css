@@ -1,0 +1,5 @@
+@font-face{font-family:Hubot;src:url('assets/fonts/HubotSans-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Hubot;src:url('assets/fonts/HubotSans-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:Hubot;src:url('assets/fonts/HubotSans-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:Kalnia;src:url('assets/fonts/Kalnia-variable.ttf') format('truetype');font-weight:100 900;font-display:swap}
+:root{--dex-ink:#100d17;--dex-paper:#f3f0e7;--dex-sun:#ffe500;--dex-hot:#ff365f;--dex-blue:#2a39d5;--dex-aqua:#2dd6d3;--dex-muted:#bdaebe;--dex-line:#766a78;--dex-body:Hubot,Arial,sans-serif;--dex-display:Kalnia,Georgia,serif}

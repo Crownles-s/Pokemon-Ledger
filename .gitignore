@@ -17,6 +17,7 @@ node_modules/
 dist/
 build/
 coverage/
+work/
 .DS_Store
 Thumbs.db
 

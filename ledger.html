@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100d17">
+  <title>Team Builder · Pokémon Ledger</title>
+  <link rel="stylesheet" href="ledger.css">
+</head>
+<body>
+  <a class="skip-link" href="#teamGrid">Skip to team</a>
+  <header class="site-header">
+    <a class="brand" href="index.html">POKÉDEX <span>by Pokémon Ledger</span></a>
+    <nav aria-label="Main navigation"><a href="index.html">Explore</a><a href="ledger.html" aria-current="page">Team Builder</a><a href="features.md">Features</a></nav>
+    <span class="header-index">FIELD GUIDE / 002</span>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-copy"><span class="eyebrow">THE BATTLE WORKSHOP / SIX SLOTS</span><h1>Make a team.<br><em>Make it yours.</em></h1><p>Choose six partners. Tune their abilities, items, moves, and training. Your team stays in this browser.</p></div>
+      <div class="hero-mark" aria-hidden="true"><span>01—06</span><b>✦</b></div>
+    </section>
+    <div class="builder-shell">
+      <section class="toolbar" aria-label="Team settings">
+        <label class="team-name-field">TEAM NAME<input id="teamName" maxlength="50" value="New Team" aria-label="Team name"></label>
+        <div class="format-control" role="group" aria-label="Battle format"><button type="button" data-format="Singles" aria-pressed="true">Singles</button><button type="button" data-format="Doubles" aria-pressed="false">Doubles</button></div>
+        <label class="game-field">MOVE REFERENCE<select id="gameSelect" aria-label="Move reference game"></select></label>
+        <div class="toolbar-actions"><button id="newTeam" type="button">New team</button><button id="saveTeam" class="action-hot" type="button">Save team ↗</button></div>
+      </section>
+      <div class="workspace">
+        <section class="team-column" aria-labelledby="teamHeading">
+          <div class="section-heading"><div><span class="eyebrow">01 / YOUR ROSTER</span><h2 id="teamHeading">Battle team</h2></div><span id="teamCount" class="roster-count">0 / 6</span></div>
+          <div id="teamGrid" class="team-grid"></div>
+          <div class="section-heading analysis-heading"><div><span class="eyebrow">02 / TEAM INTELLIGENCE</span><h2>Battle readout</h2></div></div>
+          <div id="teamAnalysis" class="team-analysis"></div>
+          <div class="section-heading regulation-heading"><div><span class="eyebrow">03 / FORMAT CHECK</span><h2>Regulation M-C</h2></div></div>
+          <div id="regulationCheck" class="regulation-check"></div>
+          <div class="section-heading saved-heading"><div><span class="eyebrow">04 / YOUR ARCHIVE</span><h2>Saved teams</h2></div></div>
+          <div id="savedTeams" class="saved-teams"></div>
+        </section>
+        <aside class="editor-column" aria-labelledby="editorHeading">
+          <div class="editor-top"><span class="eyebrow">PARTNER DETAILS</span><span id="slotIndex">SLOT 01 / 06</span></div>
+          <div id="editor"></div>
+        </aside>
+      </div>
+      <div class="bottom-actions"><button id="exportTeam" type="button">Export JSON ↓</button><button id="importTeam" type="button">Import JSON ↑</button><button id="shareTeam" type="button">Copy team link ↗</button><input id="importFile" type="file" accept="application/json,.json" hidden><span id="status" role="status" aria-live="polite"></span></div>
+      <dialog id="addDialog" class="add-dialog" aria-labelledby="addHeading"><h2 id="addHeading">Choose a team slot</h2><p id="addDescription"></p><div id="addSlots" class="add-slots"></div><button id="cancelAdd" type="button">Cancel</button></dialog>
+    </div>
+  </main>
+  <footer><span>Pokédex by Pokémon Ledger</span><span>Data: <a href="https://github.com/PokeAPI/pokeapi">PokéAPI</a> · Images: <a href="https://github.com/PokeAPI/sprites">PokéAPI Sprites</a></span><a href="CREDITS.md">Full credits</a><a href="index.html">Explore the Pokédex ↗</a></footer>
+  <script src="data/dex.js"></script>
+  <script src="data/mega.js"></script>
+  <script src="team-tools.js"></script>
+  <script src="team-stats.js"></script>
+  <script src="team-builder.js"></script>
+</body>
+</html>
